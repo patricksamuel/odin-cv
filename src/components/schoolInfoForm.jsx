@@ -3,11 +3,18 @@
 import { useState } from "react"
 
 
-export default function SchoolInfoForm({ addSchool }){
-    const [schoolInfo, setSchoolInfo] = useState({
-        degree : '',
+export default function SchoolInfoForm({ addSchool, updateSchool, isEditing, EditingIndex, currentSchool }){
+    // if editing intialize state with currentschool else empty
+    const [schoolInfo, setSchoolInfo] = useState(
+        currentSchool || {degree : ''},
 
-    });
+    );
+    //If editinngIndex change, we rewrite the state manually
+    if (isEditing && currentSchool && schoolInfo && schoolInfo.degree === "") {
+        setSchoolInfo(currentSchool)
+    }
+
+
     function handleChange(e) {
         const { name, value } = e.target;
         setSchoolInfo((prev) => ({
@@ -17,7 +24,13 @@ export default function SchoolInfoForm({ addSchool }){
     }
     
     function handleClick() {
-        addSchool(schoolInfo)
+        if (isEditing) {
+            updateSchool(schoolInfo)
+        }
+
+        else {
+            addSchool(schoolInfo)
+        }
         setSchoolInfo({degree :""})
     }
 
@@ -89,7 +102,7 @@ export default function SchoolInfoForm({ addSchool }){
             </form>
             */}
 
-            <button onClick={handleClick} className="btn btn-primary">Add New</button>
+            <button onClick={handleClick} className="btn btn-primary">{isEditing ? "Save Changes" : "Add New"}</button>
         </>
 
         
