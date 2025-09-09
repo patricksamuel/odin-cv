@@ -9,11 +9,11 @@ export default function SchoolInfoForm({ addSchool, updateSchool, isEditing, Edi
         currentSchool || {degree : ''},
 
     );
-    //If editinngIndex change, we rewrite the state manually
+     //If editinngIndex change, we rewrite the state manually
     if (isEditing && currentSchool && schoolInfo && schoolInfo.degree === "") {
         setSchoolInfo(currentSchool)
     }
-
+ 
 
     function handleChange(e) {
         const { name, value } = e.target;

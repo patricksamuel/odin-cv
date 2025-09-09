@@ -1,9 +1,8 @@
+import { useState } from "react";
+
 export default function GeneralInfoRender({generalInfo}){
 
-    let separator = '|'
-    if (generalInfo.email === '') {
-        separator = '';
-    }
+    const separator = generalInfo.email !== '' && generalInfo.phoneNumber !== '' ? ' | ' : '';
     return(
         <>
             <h1> {generalInfo.firstName} {generalInfo.lastName} </h1>

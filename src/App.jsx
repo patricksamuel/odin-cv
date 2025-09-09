@@ -1,12 +1,34 @@
 // App.jsx
 
-import { useState } from 'react'
+import { use, useState } from 'react'
 import './App.css'
 import GeneralInfoForm from './components/generalInfoForm'
 import GeneralInfoRender from './components/generalInfoRender';
 import SchoolInfoForm from './components/schoolInfoForm';
+import SchoolInfoRender from './components/schoolInfoRender';
+import ExperienceForm from './components/experienceForm';
+import ExperienceRender from './components/experienceRender';
+
 
 function App() {
+  const [editingIndexExperience, setEditingIndexExperience] = useState(null)
+  const [experienceList, setExperienceList] = useState([])
+  
+
+  function addExperience(newExperience){
+    setExperienceList((prev) => [...prev,newExperience])
+  }
+
+  function updateExperience(updatedExperience){
+    setExperienceList((prev)=>(
+      prev.map((experience,index) => 
+        index === editingIndexExperience ? updatedExperience : experience
+      )
+    ))
+    setEditingIndexExperience(null)
+  }
+
+  
   const [schoolInfoList, setschoolInfoList] = useState([])
   const [editingIndex, setEditingIndex] = useState(null)
 
@@ -33,7 +55,7 @@ function App() {
     firstName : '',
     lastName : '',
     address : '',
-    Email : '',
+    email : '',
     phoneNumber : '',
   });
 
@@ -47,9 +69,7 @@ function App() {
       }))
   }
 
-  function schoolHandleChange(e) {
-    return
-  }
+
 
   return (
 
@@ -68,23 +88,18 @@ function App() {
           editingIndex={editingIndex}
           currentSchool ={editingIndex !== null ? schoolInfoList[editingIndex] : null}
         />
+        <ExperienceForm
+          addExperience = {addExperience}
+          updateExperience={updateExperience}
+          isEditing={editingIndexExperience !== null}
+          editingIndexExperience={editingIndexExperience}
+          currentExperience ={editingIndexExperience !== null ? experienceList[editingIndexExperience] : null}
+        />
       </div>
       <div className='preview-section'>
         <GeneralInfoRender generalInfo={generalInfo}/>
-        <h2>Education</h2>
-        <ul>
-          {schoolInfoList.map((school,index) => (
-            <li key ={index}>
-              {school.degree}
-              <button 
-                onClick = {()=> setEditingIndex(index)}
-                className="btn btn-warning btn-sm ms-2"
-              >
-                Edit
-              </button>
-            </li>
-          ))}
-        </ul>
+        <SchoolInfoRender schoolInfoList={schoolInfoList} setEditingIndex = {setEditingIndex}/>
+        <ExperienceRender experienceList={experienceList} setEditingIndexExperience = {setEditingIndexExperience}/>
       </div>
     </div> 
   );
